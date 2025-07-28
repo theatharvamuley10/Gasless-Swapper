@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig-common.json",
+  "include": ["**/*", "sui/**/*.json"],
+  "references": [
+    {
+      "path": "../sdk/tsconfig.build.json"
+    },
+    {
+      "path": "../utils/tsconfig.build.json"
+    },
+    {
+      "path": "../chain-configs/tsconfig.build.json"
+    }
+  ]
+}
