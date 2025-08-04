@@ -8,35 +8,13 @@ import {MainDemoConsumerBase} from "@redstone-finance/evm-connector/contracts/da
 contract SwapRouter is MainDemoConsumerBase {
     address private constant USDC = 0x50B22eBFDDFE3930b7580De91Af994DafD42D06C;
     address private constant WBTC = 0xb71629c0AE2a8A70f8DecD7ffa0d6251cE43960F;
-    address private constant UNI = 0xbFc94CD2B1E55999Cfc7347a9313e88702B83d0F;
 
-    event LiquidityAdded(
-        address indexed provider,
-        uint256 amountA,
-        uint256 amountB
-    );
-    event LiquidityRemoved(
-        address indexed provider,
-        uint256 amountA,
-        uint256 amountB
-    );
-    event SwappedAToB(
-        address indexed user,
-        uint256 amountAIn,
-        uint256 amountBOut
-    );
-    event SwappedBToA(
-        address indexed user,
-        uint256 amountBIn,
-        uint256 amountAOut
-    );
+    event LiquidityAdded(address indexed provider, uint256 amountA, uint256 amountB);
+    event LiquidityRemoved(address indexed provider, uint256 amountA, uint256 amountB);
+    event SwappedAToB(address indexed user, uint256 amountAIn, uint256 amountBOut);
+    event SwappedBToA(address indexed user, uint256 amountBIn, uint256 amountAOut);
 
-    function checkValidInput(
-        uint256 amountIn,
-        address recipient,
-        address tokenA,
-        address tokenB
-    ) internal pure {
+    function checkValidInput(uint256 amountIn, address recipient, address tokenA, address tokenB) internal pure {
         if (amountIn == 0) revert Errors.ZeroInputAmount();
         if (recipient == address(0)) revert Errors.ZeroAddressRecipient();
         if (!(tokenA == address(0) && tokenB == address(0))) {
@@ -45,16 +23,13 @@ contract SwapRouter is MainDemoConsumerBase {
         if (tokenA == tokenB) revert Errors.SameTokens();
     }
 
-    function getAmountOut(
-        uint256 amountAIn,
-        address tokenA,
-        address tokenB
-    ) internal view returns (uint256 amountBOut) {
+    function getAmountOut(uint256 amountAIn, address tokenA, address tokenB)
+        internal
+        view
+        returns (uint256 amountBOut)
+    {
         bytes32[] memory dataFeedIds = new bytes32[](2);
-        (string memory A, string memory B) = identifyInputAndOutputTokens(
-            tokenA,
-            tokenB
-        );
+        (string memory A, string memory B) = identifyInputAndOutputTokens(tokenA, tokenB);
         dataFeedIds[0] = bytes32(abi.encode(A));
         dataFeedIds[1] = bytes32(abi.encode(B));
         uint256[] memory values = getOracleNumericValuesFromTxMsg(dataFeedIds);
@@ -64,13 +39,13 @@ contract SwapRouter is MainDemoConsumerBase {
         amountBOut = (amountAIn * tokenBPrice) / tokenAPrice;
     }
 
-    function identifyInputAndOutputTokens(
-        address tokenA,
-        address tokenB
-    ) internal pure returns (string memory A, string memory B) {
+    function identifyInputAndOutputTokens(address tokenA, address tokenB)
+        internal
+        pure
+        returns (string memory A, string memory B)
+    {
         if (tokenA == USDC) A = "USDC";
         if (tokenA == WBTC) A = "WBTC";
-        if (tokenA == UNI) A = "UNI";
 
         if (tokenB == USDC) {
             B = "USDC";
@@ -80,18 +55,12 @@ contract SwapRouter is MainDemoConsumerBase {
             B = "WBTC";
             return (A, B);
         }
-        if (tokenB == UNI) {
-            B = "UNI";
-            return (A, B);
-        }
     }
 
-    function swapExactInputSingle(
-        uint256 amountAIn,
-        address recipient,
-        address tokenA,
-        address tokenB
-    ) external returns (uint256 amountBOut) {
+    function swapExactInputSingle(uint256 amountAIn, address recipient, address tokenA, address tokenB)
+        external
+        returns (uint256 amountBOut)
+    {
         checkValidInput(amountAIn, recipient, tokenA, tokenB);
 
         amountBOut = getAmountOut(amountAIn, tokenA, tokenB);
@@ -100,11 +69,7 @@ contract SwapRouter is MainDemoConsumerBase {
         IERC20 _tokenA = IERC20(tokenA);
         IERC20 _tokenB = IERC20(tokenB);
 
-        bool successA = _tokenA.transferFrom(
-            msg.sender,
-            address(this),
-            amountAIn
-        );
+        bool successA = _tokenA.transferFrom(msg.sender, address(this), amountAIn);
         if (!successA) revert Errors.TransferFailedFromUser();
 
         if (_tokenB.balanceOf(address(this)) < amountBOut) {
