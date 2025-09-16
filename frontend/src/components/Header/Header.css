@@ -1,0 +1,140 @@
+.header {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #2a2a2a;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #00ff88;
+  margin: 0;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.connect-wallet-btn {
+  background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+  color: #000;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: "Courier New", Courier, monospace;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
+}
+
+.connect-wallet-btn:hover {
+  background: linear-gradient(135deg, #00cc6a 0%, #00ff88 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 255, 136, 0.3);
+}
+
+.connect-wallet-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(0, 255, 136, 0.2);
+}
+
+.github-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #00ff88;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.github-btn:hover {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: #00cc6a;
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
+}
+
+.github-btn:active {
+  transform: scale(1.05);
+}
+
+.github-icon {
+  width: 24px;
+  height: 24px;
+  color: #00ff88;
+  transition: color 0.3s ease;
+}
+
+.github-btn:hover .github-icon {
+  color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header {
+    padding: 1rem;
+  }
+
+  .header-title {
+    font-size: 1.2rem;
+  }
+
+  .connect-wallet-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .github-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  .github-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-container {
+    gap: 0.5rem;
+  }
+
+  .header-title {
+    font-size: 1rem;
+  }
+
+  .connect-wallet-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+}

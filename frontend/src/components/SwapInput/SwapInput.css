@@ -1,0 +1,110 @@
+.swap-input-container {
+  background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+  border-radius: 20px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 500px;
+  margin: 0.5rem 0;
+  box-shadow: 0 8px 25px rgba(0, 255, 136, 0.2);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.swap-input-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(0, 255, 136, 0.3);
+}
+
+.swap-input-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 0.75rem;
+  text-align: center;
+  font-family: "Courier New", Courier, monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.swap-input-field {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #000;
+  text-align: center;
+  font-family: "Courier New", Courier, monospace;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.swap-input-field::placeholder {
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.swap-input-field:focus {
+  outline: none;
+  border-color: rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.swap-input-field:read-only {
+  background: rgba(0, 0, 0, 0.05);
+  cursor: default;
+}
+
+.swap-input-field:read-only:focus {
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: none;
+}
+
+/* Remove number input arrows */
+.swap-input-field::-webkit-outer-spin-button,
+.swap-input-field::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.swap-input-field[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .swap-input-container {
+    padding: 1.25rem;
+    max-width: 100%;
+  }
+
+  .swap-input-title {
+    font-size: 1.1rem;
+  }
+
+  .swap-input-field {
+    font-size: 1rem;
+    padding: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .swap-input-container {
+    padding: 1rem;
+  }
+
+  .swap-input-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .swap-input-field {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+}

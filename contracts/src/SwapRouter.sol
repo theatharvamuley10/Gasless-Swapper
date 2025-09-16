@@ -3,16 +3,22 @@ pragma solidity ^0.8.4;
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {Errors} from "./libraries/Errors.sol";
-import {MainDemoConsumerBase} from "@redstone-finance/evm-connector/contracts/data-services/MainDemoConsumerBase.sol";
+import {IDataFeedsCache} from "@chainlink/contracts/src/v0.8/data-feeds/interfaces/IDataFeedsCache.sol";
 
-contract SwapRouter is MainDemoConsumerBase {
-    address private constant USDC = 0x50B22eBFDDFE3930b7580De91Af994DafD42D06C;
-    address private constant WBTC = 0xb71629c0AE2a8A70f8DecD7ffa0d6251cE43960F;
+contract SwapRouter {
+    address private immutable ETH;
+    address private immutable BTC;
+    IDataFeedsCache private constant PRICE_FEED = 0x5fb1616F78dA7aFC9FF79e0371741a747D2a7F22;
 
     event LiquidityAdded(address indexed provider, uint256 amountA, uint256 amountB);
     event LiquidityRemoved(address indexed provider, uint256 amountA, uint256 amountB);
     event SwappedAToB(address indexed user, uint256 amountAIn, uint256 amountBOut);
     event SwappedBToA(address indexed user, uint256 amountBIn, uint256 amountAOut);
+
+    constructor(address _ETH, address _BTC) {
+        ETH = _ETH;
+        BTC = _BTC;
+    }
 
     function checkValidInput(uint256 amountIn, address recipient, address tokenA, address tokenB) internal pure {
         if (amountIn == 0) revert Errors.ZeroInputAmount();
@@ -27,31 +33,21 @@ contract SwapRouter is MainDemoConsumerBase {
         internal
         view
         returns (uint256 amountBOut)
-    {
-        bytes32[] memory dataFeedIds = new bytes32[](2);
-        (string memory A, string memory B) = identifyInputAndOutputTokens(tokenA, tokenB);
-        dataFeedIds[0] = bytes32(abi.encode(A));
-        dataFeedIds[1] = bytes32(abi.encode(B));
-        uint256[] memory values = getOracleNumericValuesFromTxMsg(dataFeedIds);
-        uint256 tokenAPrice = values[0];
-        uint256 tokenBPrice = values[1];
-
-        amountBOut = (amountAIn * tokenBPrice) / tokenAPrice;
-    }
+    {}
 
     function identifyInputAndOutputTokens(address tokenA, address tokenB)
         internal
         pure
         returns (string memory A, string memory B)
     {
-        if (tokenA == USDC) A = "USDC";
-        if (tokenA == WBTC) A = "WBTC";
+        if (tokenA == ETH) A = "USDC";
+        if (tokenA == BTC) A = "WBTC";
 
-        if (tokenB == USDC) {
+        if (tokenB == BTC) {
             B = "USDC";
             return (A, B);
         }
-        if (tokenB == WBTC) {
+        if (tokenB == ETH) {
             B = "WBTC";
             return (A, B);
         }
